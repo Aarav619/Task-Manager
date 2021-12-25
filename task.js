@@ -94,17 +94,18 @@ const doneTask = () => {
         });
       }
     }
-  };
+  }
   var indexArray = new Array();
-  for(i in done_tasks){
-    var to_add = done_tasks[i].slice(0,1);
+  for (i in done_tasks) {
+    var to_add = done_tasks[i].slice(0, 1);
     indexArray.push(to_add);
   }
   let lastElement = indexArray[indexArray.length - 1];
-  if(done_task_index != lastElement){
-    console.log(`Error: no incomplete item with index #${done_task_index} exists.`)
+  if (done_task_index != lastElement) {
+    console.log(
+      `Error: no incomplete item with index #${done_task_index} exists.`
+    );
   }
-
 };
 
 const lsTask = () => {
@@ -142,7 +143,7 @@ const lsTask = () => {
   }
 };
 
-const reportTask = () =>{
+const reportTask = () => {
   var tasks = new Array();
   var completedTasks = new Array();
   var intermediate_tasks = new Array();
@@ -157,7 +158,7 @@ const reportTask = () =>{
     console.error(err);
   }
 
-  if(result == true){
+  if (result == true) {
     tasks = fs.readFileSync("task.txt").toString().split("\n");
     completedTasks = fs.readFileSync("completed.txt").toString().split("\n");
 
@@ -166,32 +167,77 @@ const reportTask = () =>{
       intermediate_tasks.push(all_task_without_index);
     }
 
-    let incomplete_tasks = intermediate_tasks.filter(x => !completedTasks.includes(x));
-    var count = 0
-    for(i in incomplete_tasks){
-      count+=1;
+    let incomplete_tasks = intermediate_tasks.filter(
+      (x) => !completedTasks.includes(x)
+    );
+    var count = 0;
+    for (i in incomplete_tasks) {
+      count += 1;
     }
 
-    console.log("Pending :",count)
-    index = 1
-    for(i in incomplete_tasks){
+    console.log("Pending :", count);
+    index = 1;
+    for (i in incomplete_tasks) {
       console.log(`${index}. ` + incomplete_tasks[i] + ` [${index}]`);
-      index+=1
+      index += 1;
     }
-    var count = 0
-    for(_ in completedTasks){
-      count+=1;
+    var count = 0;
+    for (_ in completedTasks) {
+      count += 1;
     }
-    console.log("\nCompleted :",count)
-    index = 1
-    for(i in completedTasks){
+    console.log("\nCompleted :", count);
+    index = 1;
+    for (i in completedTasks) {
       console.log(`${index}. ` + completedTasks[i]);
-      index+=1;
+      index += 1;
     }
   }
+};
 
+const delTask = () => {
+  var del_index = process.argv[3]
+  const path = "task.txt";
+  var result = false;
+  var all_task_list = new Array();
 
-}
+  try {
+    if (fs.existsSync(path)) {
+      result = true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  if (result == true) {
+    all_task_list = fs.readFileSync("task.txt").toString().split("\n");
+
+    all_task_list.sort();
+    var flag = false;
+    for (var i = 1; i < all_task_list.length+1; ++i) {
+      if (i != del_index) {
+        flag = true;
+      }
+      if (i == del_index) {
+        flag = false;
+        all_task_list.splice(del_index, 1);
+        console.log(`Deleted task #${del_index}`)
+      }
+    }
+    if (flag == true) {
+      console.log(
+        `Error: task with index #${del_index} does not exist. Nothing deleted.`
+      );
+    }
+    for (var i = 0; i < all_task_list.length; ++i) {
+      fs.writeFile("task.txt", all_task_list[i], function (err) {
+        if (err) {
+          return console.error("error");
+        }
+      });
+    }
+  }
+};
+
 function main() {
   var argLength = process.argv.length;
   const argument = process.argv[2];
@@ -226,10 +272,17 @@ function main() {
     }
   }
 
-  if(argument === "report"){
-    if(argLength == 3){
+  if (argument === "report") {
+    if (argLength == 3) {
       reportTask();
     }
+  }
+
+  if (argument === "del") {
+    if (argLength == 3) {
+      console.log("Error: Missing NUMBER for deleting tasks.");
+    }
+    delTask();
   }
 
   if (argLength < 3) {
