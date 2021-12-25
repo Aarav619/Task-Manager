@@ -122,6 +122,10 @@ const lsTask = () => {
     var all_task = fs.readFileSync("task.txt").toString().split("\n");
 
     for (var i = 0; i < all_task.length; ++i) {
+      all_task.sort();
+    }
+
+    for (var i = 0; i < all_task.length; ++i) {
       var all_task_without_index = all_task[i].slice(2);
       all_task_list.push(all_task_without_index);
     }
