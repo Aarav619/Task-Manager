@@ -137,6 +137,16 @@ const lsTask = () => {
     console.log("There are no pending tasks!");
   }
 };
+
+const reportTask = () =>{
+  var completedTasks = new Array();
+  var incompleteTasks = new Array();
+  const path = "task.txt";
+  const result = false;
+  const path1 = "completed.txt";
+  const result1 = false;
+  
+}
 function main() {
   var argLength = process.argv.length;
   const argument = process.argv[2];
@@ -168,6 +178,12 @@ function main() {
   if (argument === "ls") {
     if (argLength == 3) {
       lsTask();
+    }
+  }
+
+  if(argument === "report"){
+    if(argLength == 3){
+      reportTask();
     }
   }
 
