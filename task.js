@@ -195,7 +195,7 @@ const reportTask = () => {
 };
 
 const delTask = () => {
-  var del_index = process.argv[3]
+  var del_index = process.argv[3];
   const path = "task.txt";
   var result = false;
   var all_task_list = new Array();
@@ -211,16 +211,15 @@ const delTask = () => {
   if (result == true) {
     all_task_list = fs.readFileSync("task.txt").toString().split("\n");
 
-    all_task_list.sort();
     var flag = false;
-    for (var i = 1; i < all_task_list.length+1; ++i) {
+    for (var i = 1; i < all_task_list.length + 1; ++i) {
+      if (i == del_index) {
+        all_task_list.splice(del_index, 1);
+        console.log(`Deleted task #${del_index}`);
+      }
+
       if (i != del_index) {
         flag = true;
-      }
-      if (i == del_index) {
-        flag = false;
-        all_task_list.splice(del_index, 1);
-        console.log(`Deleted task #${del_index}`)
       }
     }
     if (flag == true) {
@@ -282,7 +281,9 @@ function main() {
     if (argLength == 3) {
       console.log("Error: Missing NUMBER for deleting tasks.");
     }
-    delTask();
+    if (argLength == 4) {
+      delTask();
+    }
   }
 
   if (argLength < 3) {
