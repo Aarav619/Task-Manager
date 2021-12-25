@@ -71,6 +71,9 @@ const doneTask = () => {
     console.error(err);
   }
 
+  done_tasks.sort();
+  console.log(done_tasks.length-1)
+
   for (var i = 0; i < done_tasks.length; ++i) {
     if (i == done_task_index) {
       if (result != true) {
@@ -92,13 +95,7 @@ const doneTask = () => {
         });
       }
     }
-
-    if (i != done_task_index) {
-      console.log(
-        `Error: no incomplete item with index #${done_task_index} exists.`
-      );
-    }
-  }
+  };
 };
 
 const lsTask = () => {
@@ -117,9 +114,7 @@ const lsTask = () => {
   if (result == true) {
     var all_task = fs.readFileSync("task.txt").toString().split("\n");
 
-    for (var i = 0; i < all_task.length; ++i) {
-      all_task.sort();
-    }
+    all_task.sort();
 
     for (var i = 0; i < all_task.length; ++i) {
       var all_task_without_index = all_task[i].slice(2);
@@ -141,10 +136,53 @@ const lsTask = () => {
 const reportTask = () =>{
   var tasks = new Array();
   var completedTasks = new Array();
-  var incompleteTasks = new Array();
+  var intermediate_tasks = new Array();
   const path = "completed.txt";
   var result = false;
-}  
+
+  try {
+    if (fs.existsSync(path)) {
+      result = true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  if(result == true){
+    tasks = fs.readFileSync("task.txt").toString().split("\n");
+    completedTasks = fs.readFileSync("completed.txt").toString().split("\n");
+
+    for (var i = 0; i < tasks.length; ++i) {
+      var all_task_without_index = tasks[i].slice(2);
+      intermediate_tasks.push(all_task_without_index);
+    }
+
+    let incomplete_tasks = intermediate_tasks.filter(x => !completedTasks.includes(x));
+    var count = 0
+    for(i in incomplete_tasks){
+      count+=1;
+    }
+
+    console.log("Pending :",count)
+    index = 1
+    for(i in incomplete_tasks){
+      console.log(`${index}. ` + incomplete_tasks[i] + ` [${index}]`);
+      index+=1
+    }
+    var count = 0
+    for(_ in completedTasks){
+      count+=1;
+    }
+    console.log("\nCompleted :",count)
+    index = 1
+    for(i in completedTasks){
+      console.log(`${index}. ` + completedTasks[i]);
+      index+=1;
+    }
+  }
+
+
+}
 function main() {
   var argLength = process.argv.length;
   const argument = process.argv[2];
