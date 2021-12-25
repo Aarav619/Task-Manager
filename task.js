@@ -100,15 +100,11 @@ const doneTask = () => {
     var to_add = done_tasks[i].slice(0,1);
     indexArray.push(to_add);
   }
-  var flag = false
-  for(i in indexArray){
-    if(done_task_index != indexArray[i]){
-      flag = true;
-    }
-  }
-  if(flag == true){
+  let lastElement = indexArray[indexArray.length - 1];
+  if(done_task_index != lastElement){
     console.log(`Error: no incomplete item with index #${done_task_index} exists.`)
   }
+
 };
 
 const lsTask = () => {
