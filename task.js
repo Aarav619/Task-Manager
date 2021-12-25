@@ -36,7 +36,7 @@ const addTask = () => {
 
   var task_to_add = task + "\n";
   if (result == true) {
-    fs.appendFile("task.txt", "\n" + task_to_add, function (err) {
+    fs.appendFile("task.txt", task_to_add, function (err) {
       if (err) {
         return console.error("error");
       }
@@ -101,6 +101,40 @@ const doneTask = () => {
   }
 };
 
+const lsTask = () => {
+  const path = "completed.txt";
+  var result = false;
+  var all_task_list = new Array();
+
+  try {
+    if (fs.existsSync(path)) {
+      result = true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  if (result == true) {
+    var completed_task = fs
+      .readFileSync("completed.txt")
+      .toString()
+      .split("\n");
+    var all_task = fs.readFileSync("task.txt").toString().split("\n");
+
+    for (var i = 0; i < all_task.length; ++i) {
+      var all_task_without_index = all_task[i].slice(2);
+      all_task_list.push(all_task_without_index);
+    }
+
+    console.log("Incompleted Tasks:");
+    for (var i = 0; i < all_task_list.length; ++i) {
+      for (var j = 0; j < completed_task.length; ++j)
+        if (all_task_list[i] != completed_task[j]) {
+          console.log(all_task_list[i] + ` [${i}]`);
+        }
+    }
+  }
+};
 function main() {
   var argLength = process.argv.length;
   const argument = process.argv[2];
@@ -127,6 +161,10 @@ function main() {
     if (argLength > 3) {
       doneTask();
     }
+  }
+
+  if (argument === "ls") {
+    lsTask();
   }
 
   if (argLength < 3) {
