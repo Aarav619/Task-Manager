@@ -142,11 +142,9 @@ const reportTask = () =>{
   var tasks = new Array();
   var completedTasks = new Array();
   var incompleteTasks = new Array();
-  const path = "task.txt";
+  const path = "completed.txt";
   var result = false;
-  const path1 = "completed.txt";
-  var result1 = false;
-}
+  
 function main() {
   var argLength = process.argv.length;
   const argument = process.argv[2];
