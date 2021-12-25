@@ -34,9 +34,9 @@ const addTask = () => {
     console.error(err);
   }
 
-  var task_to_add = task + "\n";
+  var task_to_add = task;
   if (result == true) {
-    fs.appendFile("task.txt", task_to_add, function (err) {
+    fs.appendFile("task.txt", "\n" + task_to_add, function (err) {
       if (err) {
         return console.error("error");
       }
@@ -102,7 +102,7 @@ const doneTask = () => {
 };
 
 const lsTask = () => {
-  const path = "completed.txt";
+  const path = "task.txt";
   var result = false;
   var all_task_list = new Array();
 
@@ -115,10 +115,6 @@ const lsTask = () => {
   }
 
   if (result == true) {
-    var completed_task = fs
-      .readFileSync("completed.txt")
-      .toString()
-      .split("\n");
     var all_task = fs.readFileSync("task.txt").toString().split("\n");
 
     for (var i = 0; i < all_task.length; ++i) {
@@ -130,13 +126,15 @@ const lsTask = () => {
       all_task_list.push(all_task_without_index);
     }
 
-    console.log("Incompleted Tasks:");
-    for (var i = 0; i < all_task_list.length; ++i) {
-      for (var j = 0; j < completed_task.length; ++j)
-        if (all_task_list[i] != completed_task[j]) {
-          console.log(all_task_list[i] + ` [${i}]`);
-        }
+    var iterator = 1;
+    for (i in all_task_list) {
+      console.log(`${iterator}. ` + all_task_list[i] + ` [${iterator}]`);
+      iterator += 1;
     }
+  }
+
+  if (result != true) {
+    console.log("There are no pending tasks!");
   }
 };
 function main() {
@@ -168,7 +166,9 @@ function main() {
   }
 
   if (argument === "ls") {
-    lsTask();
+    if (argLength == 3) {
+      lsTask();
+    }
   }
 
   if (argLength < 3) {
