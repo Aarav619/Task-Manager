@@ -72,7 +72,6 @@ const doneTask = () => {
   }
 
   done_tasks.sort();
-  console.log(done_tasks.length-1)
 
   for (var i = 0; i < done_tasks.length; ++i) {
     if (i == done_task_index) {
@@ -96,6 +95,20 @@ const doneTask = () => {
       }
     }
   };
+  var indexArray = new Array();
+  for(i in done_tasks){
+    var to_add = done_tasks[i].slice(0,1);
+    indexArray.push(to_add);
+  }
+  var flag = false
+  for(i in indexArray){
+    if(done_task_index != indexArray[i]){
+      flag = true;
+    }
+  }
+  if(flag == true){
+    console.log(`Error: no incomplete item with index #${done_task_index} exists.`)
+  }
 };
 
 const lsTask = () => {
