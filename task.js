@@ -139,13 +139,13 @@ const lsTask = () => {
 };
 
 const reportTask = () =>{
+  var tasks = new Array();
   var completedTasks = new Array();
   var incompleteTasks = new Array();
   const path = "task.txt";
-  const result = false;
+  var result = false;
   const path1 = "completed.txt";
-  const result1 = false;
-  
+  var result1 = false;
 }
 function main() {
   var argLength = process.argv.length;
