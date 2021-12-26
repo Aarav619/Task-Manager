@@ -199,6 +199,7 @@ const delTask = () => {
   const path = "task.txt";
   var result = false;
   var all_task_list = new Array();
+  var new_task_list = new Array();
 
   try {
     if (fs.existsSync(path)) {
@@ -211,32 +212,31 @@ const delTask = () => {
   if (result == true) {
     all_task_list = fs.readFileSync("task.txt").toString().split("\n");
 
-    var flag = false;
-    for (var i = 1; i < all_task_list.length + 1; ++i) {
-      if (i == del_index) {
-        all_task_list.splice(del_index, 1);
-        console.log(`Deleted task #${del_index}`);
-      }
+  for(var i =0; i<all_task_list.length;++i){
+    if(i+1 == del_index){
+      all_task_list.splice(i, 1);
+      console.log(`Deleted task #${del_index}`);
+    }
+    }
+    all_task_list.sort();
 
-      if (i != del_index) {
-        flag = true;
-      }
-    }
-    if (flag == true) {
-      console.log(
-        `Error: task with index #${del_index} does not exist. Nothing deleted.`
-      );
-    }
     for (var i = 0; i < all_task_list.length; ++i) {
-      fs.writeFile("task.txt", all_task_list[i], function (err) {
+      fs.writeFile("task.txt", all_task_list[i] + "\n", function (err) {
         if (err) {
           return console.error("error");
         }
       });
     }
+    new_task_list = fs.readFileSync("task.txt").toString().split("\n");
+    var count = 1
+    for(i = 0; i< new_task_list.length;++i){
+      count+=1;
+      }
+    if(del_index != count){
+        console.log(`Error: task with index #${del_index} does not exist. Nothing deleted.`)
+      }
   }
-};
-
+  }
 function main() {
   var argLength = process.argv.length;
   const argument = process.argv[2];
