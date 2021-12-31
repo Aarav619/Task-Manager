@@ -2,13 +2,22 @@ const fs = require("fs");
 const process = require("process");
 
 const usage_help = () => {
-	let usage = `Usage :-
-$ ./task add 2 hello world    # Add a new item with priority 2 and text "hello world" to the list
-$ ./task ls                   # Show incomplete priority list items sorted by priority in ascending order
-$ ./task del INDEX            # Delete the incomplete item with the given index
-$ ./task done INDEX           # Mark the incomplete item with the given index as complete
-$ ./task help                 # Show usage
-$ ./task report               # Statistics`;
+	let usage = `
+	---------------------------------------------------     WELCOME TO     ------------------------------------------------- 
+	                                                     CLI TASK MANAGER 
+	
+	Usage :-
+	
+	=========================================================================================================================
+	|                                                                                                                       |
+	|	$ ./task help                 # Show usage                                                                      |
+	|	$ ./task add 2 hello world    # Add a new item with priority 2 and text "hello world" to the list               |
+	|	$ ./task ls                   # Show incomplete priority list items sorted by priority in ascending order       |
+	|	$ ./task del INDEX            # Delete the incomplete item with the given index                                 | 
+	|	$ ./task done INDEX           # Mark the incomplete item with the given index as complete                       |
+	|	$ ./task report               # Statistics                                                                      |
+	|                                                                                                                       |
+	=========================================================================================================================`;
 
 	console.log(usage);
 };
@@ -154,7 +163,6 @@ const reportTask = (result) => {
 		for (i in incomplete_tasks) {
 			count += 1;
 		}
-
 		console.log("Pending :", count);
 		index = 1;
 		for (i in incomplete_tasks) {
@@ -188,7 +196,7 @@ const delTask = (result) => {
 				console.log(`Deleted task #${del_index}`);
 			}
 		}
-		
+
 		for (var i = 0; i < all_task_list.length; ++i) {
 			fs.writeFile("task.txt", all_task_list[i] + "\n", function (err) {
 				if (err) {
