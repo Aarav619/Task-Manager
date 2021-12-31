@@ -146,10 +146,7 @@ const reportTask = (result) => {
 
 	if (result == true) {
 		tasks = fs.readFileSync("task.txt").toString().split("\n");
-		completedTasks = fs
-			.readFileSync("completed.txt")
-			.toString()
-			.split("\n");
+		completedTasks = fs.readFileSync("completed.txt").toString().split("\n");
 
 		for (var i = 0; i < tasks.length; ++i) {
 			var all_task_without_index = tasks[i].slice(2);
