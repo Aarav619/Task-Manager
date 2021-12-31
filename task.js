@@ -247,7 +247,9 @@ function main() {
 	}
 
 	else if (argument === "ls") {
-		lsTask();
+		const path = "task.txt";
+		const result = verifyPath(path);
+		lsTask(result);
 	}
 
 	else if (argument === "report") {
