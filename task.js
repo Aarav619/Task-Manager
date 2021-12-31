@@ -13,10 +13,21 @@ $ ./task report               # Statistics`;
 	console.log(usage);
 };
 
-const addTask = () => {
-	let task = "";
-	const path = "task.txt";
+const verifyPath = (path) =>{
 	var result = false;
+  
+  try {
+		if (fs.existsSync(path)) {
+			result = true;
+		}
+	} catch (err) {
+		console.error(err);
+	}
+  return result;
+}
+
+const addTask = (result) => {
+	let task = "";
 	for (var i = 3; i < process.argv.length; ++i) {
 		task += process.argv[i] + " ";
 	}
@@ -25,14 +36,6 @@ const addTask = () => {
 	var task_length = task.length;
 	var priority = process.argv[3];
 	var task_without_priority = task.slice(2, task_length);
-
-	try {
-		if (fs.existsSync(path)) {
-			result = true;
-		}
-	} catch (err) {
-		console.error(err);
-	}
 
 	var task_to_add = task;
 	if (result == true) {
@@ -57,11 +60,10 @@ const addTask = () => {
 	}
 };
 
-const completedTask = () => {
+const completedTask = (result) => {
 	var done_task_index = process.argv[3];
 	var done_tasks = fs.readFileSync("task.txt").toString().split("\n");
 	const path = "completed.txt";
-	var result = false;
 
 	try {
 		if (fs.existsSync(path)) {
@@ -112,18 +114,8 @@ const completedTask = () => {
 	}
 };
 
-const lsTask = () => {
-	const path = "task.txt";
-	var result = false;
+const lsTask = (result) => {
 	var all_task_list = new Array();
-
-	try {
-		if (fs.existsSync(path)) {
-			result = true;
-		}
-	} catch (err) {
-		console.error(err);
-	}
 
 	if (result == true) {
 		var all_task = fs.readFileSync("task.txt").toString().split("\n");
@@ -147,20 +139,11 @@ const lsTask = () => {
 	}
 };
 
-const reportTask = () => {
+const reportTask = (result) => {
 	var tasks = new Array();
 	var completedTasks = new Array();
 	var intermediate_tasks = new Array();
-	const path = "completed.txt";
 	var result = false;
-
-	try {
-		if (fs.existsSync(path)) {
-			result = true;
-		}
-	} catch (err) {
-		console.error(err);
-	}
 
 	if (result == true) {
 		tasks = fs.readFileSync("task.txt").toString().split("\n");
@@ -201,20 +184,10 @@ const reportTask = () => {
 	}
 };
 
-const delTask = () => {
+const delTask = (result) => {
 	var del_index = process.argv[3];
-	const path = "task.txt";
-	var result = false;
 	var all_task_list = new Array();
 	var new_task_list = new Array();
-
-	try {
-		if (fs.existsSync(path)) {
-			result = true;
-		}
-	} catch (err) {
-		console.error(err);
-	}
 
 	if (result == true) {
 		all_task_list = fs.readFileSync("task.txt").toString().split("\n");
@@ -261,7 +234,8 @@ function main() {
 		}
 
 		if (argLength > 3) {
-			addTask();
+      const path = "task.txt";
+			addTask(path);
 		}
 	}
 
