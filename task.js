@@ -63,15 +63,6 @@ const addTask = (result) => {
 const completedTask = (result) => {
 	var done_task_index = process.argv[3];
 	var done_tasks = fs.readFileSync("task.txt").toString().split("\n");
-	const path = "completed.txt";
-
-	try {
-		if (fs.existsSync(path)) {
-			result = true;
-		}
-	} catch (err) {
-		console.error(err);
-	}
 
 	done_tasks.sort();
 
