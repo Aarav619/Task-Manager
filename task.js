@@ -134,7 +134,6 @@ const reportTask = (result) => {
 	var tasks = new Array();
 	var completedTasks = new Array();
 	var intermediate_tasks = new Array();
-	var result = false;
 
 	if (result == true) {
 		tasks = fs.readFileSync("task.txt").toString().split("\n");
