@@ -188,8 +188,7 @@ const delTask = (result) => {
 				console.log(`Deleted task #${del_index}`);
 			}
 		}
-		all_task_list.sort();
-
+		
 		for (var i = 0; i < all_task_list.length; ++i) {
 			fs.writeFile("task.txt", all_task_list[i] + "\n", function (err) {
 				if (err) {
@@ -225,7 +224,8 @@ function main() {
 
 		if (argLength > 3) {
 			const path = "task.txt";
-			addTask(path);
+			var result = verifyPath(path);
+			addTask(result);
 		}
 	}
 
@@ -235,7 +235,9 @@ function main() {
 		}
 
 		if (argLength > 3) {
-			completedTask();
+			const path = "completed.txt";
+			var result = verifyPath(path)
+			completedTask(result);
 		}
 	}
 
