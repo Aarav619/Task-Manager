@@ -57,7 +57,7 @@ const addTask = () => {
 	}
 };
 
-const doneTask = () => {
+const completedTask = () => {
 	var done_task_index = process.argv[3];
 	var done_tasks = fs.readFileSync("task.txt").toString().split("\n");
 	const path = "completed.txt";
@@ -271,7 +271,7 @@ function main() {
 		}
 
 		if (argLength > 3) {
-			doneTask();
+			completedTask();
 		}
 	}
 
