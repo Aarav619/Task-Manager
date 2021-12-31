@@ -13,18 +13,18 @@ $ ./task report               # Statistics`;
 	console.log(usage);
 };
 
-const verifyPath = (path) =>{
+const verifyPath = (path) => {
 	var result = false;
-  
-  try {
+
+	try {
 		if (fs.existsSync(path)) {
 			result = true;
 		}
 	} catch (err) {
 		console.error(err);
 	}
-  return result;
-}
+	return result;
+};
 
 const addTask = (result) => {
 	let task = "";
@@ -234,7 +234,7 @@ function main() {
 		}
 
 		if (argLength > 3) {
-      const path = "task.txt";
+			const path = "task.txt";
 			addTask(path);
 		}
 	}
@@ -250,15 +250,11 @@ function main() {
 	}
 
 	if (argument === "ls") {
-		if (argLength == 3) {
-			lsTask();
-		}
+		lsTask();
 	}
 
 	if (argument === "report") {
-		if (argLength == 3) {
-			reportTask();
-		}
+		reportTask();
 	}
 
 	if (argument === "del") {
