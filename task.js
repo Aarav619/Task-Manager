@@ -225,7 +225,7 @@ function main() {
 		usage_help();
 	}
 
-	if (argument === "add") {
+	else if (argument === "add") {
 		if (argLength == 3) {
 			console.log("Error: Missing tasks string. Nothing added!");
 		}
@@ -237,7 +237,7 @@ function main() {
 		}
 	}
 
-	if (argument === "done") {
+	else if (argument === "done") {
 		if (argLength == 3) {
 			console.log("Error: Missing NUMBER for marking tasks as done.");
 		}
@@ -249,15 +249,15 @@ function main() {
 		}
 	}
 
-	if (argument === "ls") {
+	else if (argument === "ls") {
 		lsTask();
 	}
 
-	if (argument === "report") {
+	else if (argument === "report") {
 		reportTask();
 	}
 
-	if (argument === "del") {
+	else if (argument === "del") {
 		if (argLength == 3) {
 			console.log("Error: Missing NUMBER for deleting tasks.");
 		}
@@ -266,9 +266,11 @@ function main() {
 		}
 	}
 
-	if (argLength < 3) {
+	else if (argLength < 3) {
 		usage_help();
-	} else {
+	} 
+	
+	else{
 		console.log(
 			`Invalid command ${argument}, Select the appropiate command from menu below: \n`
 		);
