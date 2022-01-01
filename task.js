@@ -247,7 +247,10 @@ function main() {
 			console.log("Error: Missing NUMBER for deleting tasks.");
 		}
 		if (argLength == 4) {
-			delTask();
+			const path = "task.txt";
+			const result = verifyPath(path)
+			var all_task_list = readTasks(path);
+			delTask(result, all_task_list);
 		}
 	} else if (argLength < 3) {
 		usage_help();
