@@ -36,8 +36,12 @@ const verifyPath = (path) => {
 };
 
 const readTasks = (path) => {
-	all_task_list = fs.readFileSync(path).toString().split("\n");
-	return all_task_list;
+	try {
+		all_task_list = fs.readFileSync(path).toString().split("\n");
+		return all_task_list;
+	} catch (err) {
+		console.error("First add some task to list them");
+	}
 };
 
 const addTask = (result) => {
@@ -89,8 +93,11 @@ const completedTask = (result, done_tasks) => {
 				});
 			}
 			if (result == true) {
-				var to_add_task = done_tasks[i].slice(2);fs.appendFile("completed.txt","\n" + to_add_task, 
-				function (err) {
+				var to_add_task = done_tasks[i].slice(2);
+				fs.appendFile(
+					"completed.txt",
+					"\n" + to_add_task,
+					function (err) {
 						if (err) {
 							return console.error("error");
 						}
@@ -118,7 +125,6 @@ const lsTask = (result, all_task) => {
 
 	if (result == true) {
 		var all_task = fs.readFileSync("task.txt").toString().split("\n");
-
 		all_task.sort();
 
 		for (var i = 0; i < all_task.length; ++i) {
@@ -248,7 +254,7 @@ function main() {
 		}
 		if (argLength == 4) {
 			const path = "task.txt";
-			const result = verifyPath(path)
+			const result = verifyPath(path);
 			var all_task_list = readTasks(path);
 			delTask(result, all_task_list);
 		}
