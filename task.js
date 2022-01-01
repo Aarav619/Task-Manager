@@ -35,6 +35,11 @@ const verifyPath = (path) => {
 	return result;
 };
 
+const readTasks = (path) => {
+	all_task_list = fs.readFileSync(path).toString().split("\n");
+	return all_task_list;
+};
+
 const addTask = (result) => {
 	let task = "";
 	for (var i = 3; i < process.argv.length; ++i) {
@@ -69,12 +74,9 @@ const addTask = (result) => {
 	}
 };
 
-const completedTask = (result) => {
+const completedTask = (result, done_tasks) => {
 	var done_task_index = process.argv[3];
-	var done_tasks = fs.readFileSync("task.txt").toString().split("\n");
-
 	done_tasks.sort();
-
 	for (var i = 1; i < done_tasks.length + 1; ++i) {
 		if (done_task_index == i) {
 			if (result != true) {
@@ -87,11 +89,8 @@ const completedTask = (result) => {
 				});
 			}
 			if (result == true) {
-				var to_add_task = done_tasks[i].slice(2);
-				fs.appendFile(
-					"completed.txt",
-					"\n" + to_add_task,
-					function (err) {
+				var to_add_task = done_tasks[i].slice(2);fs.appendFile("completed.txt","\n" + to_add_task, 
+				function (err) {
 						if (err) {
 							return console.error("error");
 						}
@@ -114,7 +113,7 @@ const completedTask = (result) => {
 	}
 };
 
-const lsTask = (result) => {
+const lsTask = (result, all_task) => {
 	var all_task_list = new Array();
 
 	if (result == true) {
@@ -139,15 +138,10 @@ const lsTask = (result) => {
 	}
 };
 
-const reportTask = (result) => {
-	var tasks = new Array();
-	var completedTasks = new Array();
+const reportTask = (result, tasks, completedTasks) => {
 	var intermediate_tasks = new Array();
 
 	if (result == true) {
-		tasks = fs.readFileSync("task.txt").toString().split("\n");
-		completedTasks = fs.readFileSync("completed.txt").toString().split("\n");
-
 		for (var i = 0; i < tasks.length; ++i) {
 			var all_task_without_index = tasks[i].slice(2);
 			intermediate_tasks.push(all_task_without_index);
@@ -179,14 +173,11 @@ const reportTask = (result) => {
 	}
 };
 
-const delTask = (result) => {
+const delTask = (result, all_task_list) => {
 	var del_index = process.argv[3];
-	var all_task_list = new Array();
 	var new_task_list = new Array();
 
 	if (result == true) {
-		all_task_list = fs.readFileSync("task.txt").toString().split("\n");
-
 		for (var i = 0; i < all_task_list.length; ++i) {
 			if (i + 1 == del_index) {
 				all_task_list.splice(i, 1);
@@ -220,9 +211,7 @@ function main() {
 
 	if (argument === "help") {
 		usage_help();
-	}
-
-	else if (argument === "add") {
+	} else if (argument === "add") {
 		if (argLength == 3) {
 			console.log("Error: Missing tasks string. Nothing added!");
 		}
@@ -232,44 +221,37 @@ function main() {
 			var result = verifyPath(path);
 			addTask(result);
 		}
-	}
-
-	else if (argument === "done") {
+	} else if (argument === "done") {
 		if (argLength == 3) {
 			console.log("Error: Missing NUMBER for marking tasks as done.");
 		}
 
 		if (argLength > 3) {
 			const path = "completed.txt";
-			var result = verifyPath(path)
-			completedTask(result);
+			var result = verifyPath(path);
+			var done_tasks = readTasks(path);
+			completedTask(result, done_tasks);
 		}
-	}
-
-	else if (argument === "ls") {
+	} else if (argument === "ls") {
 		const path = "task.txt";
 		const result = verifyPath(path);
-		lsTask(result);
-	}
-
-	else if (argument === "report") {
-		reportTask();
-	}
-
-	else if (argument === "del") {
+		var all_tasks = readTasks(path);
+		lsTask(result, all_tasks);
+	} else if (argument === "report") {
+		path = result = verifyPath(path);
+		var tasks = readTasks(path);
+		var completed_tasks = readTasks(path);
+		reportTask(result, tasks, completed_tasks);
+	} else if (argument === "del") {
 		if (argLength == 3) {
 			console.log("Error: Missing NUMBER for deleting tasks.");
 		}
 		if (argLength == 4) {
 			delTask();
 		}
-	}
-
-	else if (argLength < 3) {
+	} else if (argLength < 3) {
 		usage_help();
-	} 
-	
-	else{
+	} else {
 		console.log(
 			`Invalid command ${argument}, Select the appropiate command from menu below: \n`
 		);
