@@ -97,7 +97,9 @@ const completedTask = (result, done_tasks) => {
 				if (result == true) {
 					var to_add_task = done_tasks[i - 1].slice(2);
 					fs.appendFile(
-						"completed.txt",to_add_task + "\n", function (err) {
+						"completed.txt",
+						to_add_task + "\n",
+						function (err) {
 							if (err) {
 								return console.error("error");
 							}
@@ -107,10 +109,8 @@ const completedTask = (result, done_tasks) => {
 				}
 			}
 		}
-		if (done_task_index != done_tasks.length && done_task_index > done_tasks.length) {
-			console.log(
-				`Error: no incomplete item with index #${done_task_index} exists.`
-			);
+		if (done_task_index != done_tasks.length &&	done_task_index > done_tasks.length) {
+			console.log(`Error: no incomplete item with index #${done_task_index} exists.`);
 		}
 	}
 };
@@ -155,7 +155,7 @@ const reportTask = (result, tasks, completedTasks) => {
 			console.log(`${index}. ` + incomplete_tasks[i] + ` [${index}]`);
 			index += 1;
 		}
-		console.log("\nCompleted :", incomplete_tasks.length);
+		console.log("\nCompleted :", completedTasks.length);
 		index = 1;
 		for (i in completedTasks) {
 			console.log(`${index}. ` + completedTasks[i]);
