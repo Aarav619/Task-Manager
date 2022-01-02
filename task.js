@@ -55,7 +55,7 @@ const addTask = (result) => {
 
 	var task_without_priority = task.slice(2, task_length);
 	var task_to_add = task;
-	
+
 	if (result == true) {
 		fs.appendFile("task.txt", "\n" + task_to_add, function (err) {
 			if (err) {
@@ -80,41 +80,43 @@ const addTask = (result) => {
 
 const completedTask = (result, done_tasks) => {
 	var done_task_index = process.argv[3];
-	done_tasks.sort();
-	for (var i = 1; i < done_tasks.length + 1; ++i) {
-		if (done_task_index == i) {
-			if (result != true) {
-				var to_add_task = done_tasks[i - 1].slice(2);
-				fs.writeFile("completed.txt", to_add_task, function (err) {
-					if (err) {
-						return console.error("error");
-					}
-					console.log("Marked item as done.");
-				});
-			}
-			if (result == true) {
-				var to_add_task = done_tasks[i - 1 ].slice(2);
-				fs.appendFile("completed.txt", to_add_task +"\n",
-					function (err) {
+
+	if (result == true) {
+		done_tasks.sort();
+		for (var i = 1; i < done_tasks.length + 1; ++i) {
+			if (done_task_index == i) {
+				if (result != true) {
+					var to_add_task = done_tasks[i - 1].slice(2);
+					fs.writeFile("completed.txt", to_add_task, function (err) {
 						if (err) {
 							return console.error("error");
 						}
 						console.log("Marked item as done.");
-					}
-				);
+					});
+				}
+				if (result == true) {
+					var to_add_task = done_tasks[i - 1].slice(2);
+					fs.appendFile(
+						"completed.txt",
+						to_add_task + "\n",
+						function (err) {
+							if (err) {
+								return console.error("error");
+							}
+							console.log("Marked item as done.");
+						}
+					);
+				}
 			}
 		}
-	}
-	var indexArray = new Array();
-	for (i in done_tasks) {
-		var to_add = done_tasks[i].slice(0, 1);
-		indexArray.push(to_add);
-	}
-	let lastElement = indexArray[indexArray.length - 1];
-	if (done_task_index != lastElement) {
-		console.log(
-			`Error: no incomplete item with index #${done_task_index} exists.`
-		);
+		if (
+			done_task_index != done_tasks.length &&
+			done_task_index > done_tasks.length
+		) {
+			console.log(
+				`Error: no incomplete item with index #${done_task_index} exists.`
+			);
+		}
 	}
 };
 
@@ -190,7 +192,7 @@ const delTask = (result, all_task_list) => {
 				}
 			});
 		}
-		
+
 		if (del_index != all_task_list.length) {
 			console.log(
 				`Error: task with index #${del_index} does not exist. Nothing deleted.`
