@@ -96,10 +96,7 @@ const completedTask = (result, done_tasks) => {
 				}
 				if (result == true) {
 					var to_add_task = done_tasks[i - 1].slice(2);
-					fs.appendFile(
-						"completed.txt",
-						to_add_task + "\n",
-						function (err) {
+					fs.appendFile("completed.txt", "\n" + to_add_task , function (err) {
 							if (err) {
 								return console.error("error");
 							}
@@ -109,7 +106,7 @@ const completedTask = (result, done_tasks) => {
 				}
 			}
 		}
-		if (done_task_index != done_tasks.length &&	done_task_index > done_tasks.length) {
+		if (done_task_index != done_tasks.length && done_task_index > done_tasks.length) {
 			console.log(`Error: no incomplete item with index #${done_task_index} exists.`);
 		}
 	}
@@ -125,48 +122,54 @@ const lsTask = (result, all_task) => {
 			var all_task_without_index = all_task[i].slice(2);
 			all_task_list.push(all_task_without_index);
 		}
-
 		var iterator = 1;
 		for (i in all_task_list) {
-			console.log(`${iterator}. ` + all_task_list[i] + ` [${priority}]`);
+			console.log(`${iterator}. ` + all_task_list[i] + ` [${iterator}]`);
 			iterator += 1;
 		}
 	}
-
 	if (result != true) {
 		console.log("There are no pending tasks!");
 	}
 };
 
-const reportTask = (result, tasks, completedTasks) => {
+const reportTask = (result1, result2, tasks, completed_tasks) => {
 	var intermediate_tasks = new Array();
-
-	if (result == true) {
+	if (result1 == true) {
 		for (var i = 0; i < tasks.length; ++i) {
 			var all_task_without_index = tasks[i].slice(2);
 			intermediate_tasks.push(all_task_without_index);
 		}
-		let incomplete_tasks = intermediate_tasks.filter(
-			(x) => !completedTasks.includes(x)
-		);
-		console.log("Pending :", incomplete_tasks.length);
-		index = 1;
-		for (i in incomplete_tasks) {
-			console.log(`${index}. ` + incomplete_tasks[i] + ` [${index}]`);
-			index += 1;
+		if (result2 == true) {
+			var incomplete_tasks = intermediate_tasks.filter(
+				(x) => !completed_tasks.includes(x)
+			);
+			console.log("Pending :", incomplete_tasks.length);
+
+			for (var i = 0; i < incomplete_tasks.length; ++i) {
+				console.log(`${i + 1}. ` + incomplete_tasks[i] + ` [${i + 1}]`);
+			}
+			console.log("\nCompleted :", completed_tasks.length);
+			for (var i = 0; i < completed_tasks.length; ++i) {
+				console.log(`${i + 1}. ` + completed_tasks[i]);
+			}
 		}
-		console.log("\nCompleted :", completedTasks.length);
-		index = 1;
-		for (i in completedTasks) {
-			console.log(`${index}. ` + completedTasks[i]);
-			index += 1;
+		if (result2 != true) {
+			for (var i = 0; i < tasks.length; ++i) {
+				var all_task_without_index = tasks[i].slice(2);
+				intermediate_tasks.push(all_task_without_index);
+			}
+			console.log("Pending :", intermediate_tasks.length);
+			for (var i = 0; i < intermediate_tasks.length; ++i) {
+				console.log(`${i + 1}. ` + intermediate_tasks[i] + ` [${i + 1}]`);
+			}
+			console.log("Comepleted : 0");
 		}
 	}
 };
 
 const delTask = (result, all_task_list) => {
 	var del_index = process.argv[3];
-
 	if (result == true) {
 		for (var i = 0; i < all_task_list.length; ++i) {
 			if (i + 1 == del_index) {
@@ -174,7 +177,6 @@ const delTask = (result, all_task_list) => {
 				console.log(`Deleted task #${del_index}`);
 			}
 		}
-
 		for (var i = 0; i < all_task_list.length; ++i) {
 			fs.writeFile("task.txt", all_task_list[i] + "\n", function (err) {
 				if (err) {
@@ -182,8 +184,7 @@ const delTask = (result, all_task_list) => {
 				}
 			});
 		}
-
-		if (del_index != all_task_list.length) {
+		if (del_index != all_task_list.length && del_index > all_task_list.length) {
 			console.log(
 				`Error: task with index #${del_index} does not exist. Nothing deleted.`
 			);
@@ -201,7 +202,6 @@ function main() {
 		if (argLength == 3) {
 			console.log("Error: Missing tasks string. Nothing added!");
 		}
-
 		if (argLength > 3) {
 			const path = "task.txt";
 			var result = verifyPath(path);
@@ -211,7 +211,6 @@ function main() {
 		if (argLength == 3) {
 			console.log("Error: Missing NUMBER for marking tasks as done.");
 		}
-
 		if (argLength > 3) {
 			const path = "task.txt";
 			var result = verifyPath(path);
@@ -224,10 +223,13 @@ function main() {
 		var all_tasks = readTasks(path);
 		lsTask(result, all_tasks);
 	} else if (argument === "report") {
-		path = result = verifyPath(path);
-		var tasks = readTasks(path);
-		var completed_tasks = readTasks(path);
-		reportTask(result, tasks, completed_tasks);
+		path1 = "task.txt";
+		path2 = "completed.txt";
+		result1 = verifyPath(path1);
+		result2 = verifyPath(path2);
+		var tasks = readTasks(path1);
+		var completed_tasks = readTasks(path2);
+		reportTask(result1, result2, tasks, completed_tasks);
 	} else if (argument === "del") {
 		if (argLength == 3) {
 			console.log("Error: Missing NUMBER for deleting tasks.");
