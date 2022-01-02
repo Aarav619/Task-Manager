@@ -93,8 +93,8 @@ const completedTask = (result, done_tasks) => {
 				});
 			}
 			if (result == true) {
-				var to_add_task = done_tasks[i].slice(2);
-				fs.appendFile("completed.txt","\n" + to_add_task,
+				var to_add_task = done_tasks[i - 1 ].slice(2);
+				fs.appendFile("completed.txt", to_add_task +"\n",
 					function (err) {
 						if (err) {
 							return console.error("error");
