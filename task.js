@@ -49,13 +49,13 @@ const addTask = (result) => {
 	for (var i = 3; i < process.argv.length; ++i) {
 		task += process.argv[i] + " ";
 	}
-
 	task = task.trim();
 	var task_length = task.length;
 	var priority = process.argv[3];
-	var task_without_priority = task.slice(2, task_length);
 
+	var task_without_priority = task.slice(2, task_length);
 	var task_to_add = task;
+	
 	if (result == true) {
 		fs.appendFile("task.txt", "\n" + task_to_add, function (err) {
 			if (err) {
@@ -94,9 +94,7 @@ const completedTask = (result, done_tasks) => {
 			}
 			if (result == true) {
 				var to_add_task = done_tasks[i].slice(2);
-				fs.appendFile(
-					"completed.txt",
-					"\n" + to_add_task,
+				fs.appendFile("completed.txt","\n" + to_add_task,
 					function (err) {
 						if (err) {
 							return console.error("error");
@@ -124,7 +122,6 @@ const lsTask = (result, all_task) => {
 	var all_task_list = new Array();
 
 	if (result == true) {
-		var all_task = fs.readFileSync("task.txt").toString().split("\n");
 		all_task.sort();
 
 		for (var i = 0; i < all_task.length; ++i) {
@@ -156,11 +153,7 @@ const reportTask = (result, tasks, completedTasks) => {
 		let incomplete_tasks = intermediate_tasks.filter(
 			(x) => !completedTasks.includes(x)
 		);
-		var count = 0;
-		for (i in incomplete_tasks) {
-			count += 1;
-		}
-		console.log("Pending :", count);
+		console.log("Pending :", incomplete_tasks.length);
 		index = 1;
 		for (i in incomplete_tasks) {
 			console.log(`${index}. ` + incomplete_tasks[i] + ` [${index}]`);
