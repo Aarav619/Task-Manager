@@ -131,7 +131,7 @@ const lsTask = (result, all_task) => {
 
 		var iterator = 1;
 		for (i in all_task_list) {
-			console.log(`${iterator}. ` + all_task_list[i] + ` [${iterator}]`);
+			console.log(`${iterator}. ` + all_task_list[i] + ` [${priority}]`);
 			iterator += 1;
 		}
 	}
@@ -174,7 +174,6 @@ const reportTask = (result, tasks, completedTasks) => {
 
 const delTask = (result, all_task_list) => {
 	var del_index = process.argv[3];
-	var new_task_list = new Array();
 
 	if (result == true) {
 		for (var i = 0; i < all_task_list.length; ++i) {
@@ -191,12 +190,8 @@ const delTask = (result, all_task_list) => {
 				}
 			});
 		}
-		new_task_list = fs.readFileSync("task.txt").toString().split("\n");
-		var count = 1;
-		for (i = 0; i < new_task_list.length; ++i) {
-			count += 1;
-		}
-		if (del_index != count) {
+		
+		if (del_index != all_task_list.length) {
 			console.log(
 				`Error: task with index #${del_index} does not exist. Nothing deleted.`
 			);
@@ -226,7 +221,7 @@ function main() {
 		}
 
 		if (argLength > 3) {
-			const path = "completed.txt";
+			const path = "task.txt";
 			var result = verifyPath(path);
 			var done_tasks = readTasks(path);
 			completedTask(result, done_tasks);
