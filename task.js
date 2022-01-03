@@ -138,7 +138,7 @@ const reportTask = (result1, result2, tasks,path2) => {
 			intermediate_tasks.push(all_task_without_index);
 		}
 		if (result2 == true) {
-			var completed_tasks = readTasks(path);
+			var completed_tasks = readTasks(path2);
 			var incomplete_tasks = intermediate_tasks.filter(
 				(x) => !completed_tasks.includes(x)
 			);
@@ -152,17 +152,13 @@ const reportTask = (result1, result2, tasks,path2) => {
 			}
 		}
 		if (result2 != true) {
-			for (var i = 0; i < tasks.length; ++i) {
-				var all_task_without_index = tasks[i].slice(2);
-				intermediate_tasks.push(all_task_without_index);
-			}
 			console.log("Pending :", intermediate_tasks.length);
 			for (var i = 0; i < intermediate_tasks.length; ++i) {
 				console.log(
 					`${i + 1}. ` + intermediate_tasks[i] + ` [${i + 1}]`
 				);
 			}
-			console.log("Comepleted : 0");
+			console.log("\nCompleted : 0");
 		}
 	}
 };
