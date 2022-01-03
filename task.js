@@ -59,9 +59,7 @@ const addTask = (result) => {
 			if (err) {
 				return console.error("error");
 			}
-			console.log(
-				`Added task: "${task_without_priority}" with priority ${priority}`
-			);
+			console.log(`Added task: "${task_without_priority}" with priority ${priority}`);
 		});
 	}
 	if (result != true) {
@@ -69,9 +67,7 @@ const addTask = (result) => {
 			if (err) {
 				return console.error("error");
 			}
-			console.log(
-				`Added task: "${task_without_priority}" with priority ${priority}`
-			);
+			console.log(`Added task: "${task_without_priority}" with priority ${priority}`);
 		});
 	}
 };
@@ -167,9 +163,7 @@ const delTask = (result, all_task_list) => {
 	var del_index = process.argv[3];
 	if (result == true) {
 		if (del_index > all_task_list.length || all_task_list[0] == "") {
-			return console.log(
-				`Error: task with index #${del_index} does not exist. Nothing deleted.`
-			);
+			return console.log(`Error: task with index #${del_index} does not exist. Nothing deleted.`);
 		}
 		for (var i = 0; i < all_task_list.length; i++) {
 			if (i + 1 == del_index) {
