@@ -242,7 +242,7 @@ function main() {
 		usage_help();
 	}
 	 else {
-		console.log(`Invalid command ${argument}, Select the appropiate command from menu below: \n`);
+		console.log(`Invalid command ${argument}, Select the appropriate command from menu below: \n`);
 		usage_help();
 	}
 }
