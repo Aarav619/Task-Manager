@@ -151,7 +151,7 @@ const reportTask = (result1, result2, tasks,path2) => {
 				console.log(`${i + 1}. ` + completed_tasks[i]);
 			}
 		}
-		if (result2 != true) {
+		if (result2 != true || completed_tasks[0]=="") {
 			console.log("Pending :", intermediate_tasks.length);
 			for (var i = 0; i < intermediate_tasks.length; ++i) {
 				console.log(
