@@ -40,7 +40,7 @@ const readTasks = (path) => {
 		all_task_list = fs.readFileSync(path).toString().split("\n");
 		return all_task_list;
 	} catch (err) {
-		console.error("First add some task to list them");
+		console.error("First add some task to list them, Report can't be generated...");
 	}
 };
 
@@ -130,7 +130,7 @@ const lsTask = (result, all_task) => {
 	}
 };
 
-const reportTask = (result1, result2, tasks, completed_tasks) => {
+const reportTask = (result1, result2, tasks,path2) => {
 	var intermediate_tasks = new Array();
 	if (result1 == true) {
 		for (var i = 0; i < tasks.length; ++i) {
@@ -138,6 +138,7 @@ const reportTask = (result1, result2, tasks, completed_tasks) => {
 			intermediate_tasks.push(all_task_without_index);
 		}
 		if (result2 == true) {
+			var completed_tasks = readTasks(path);
 			var incomplete_tasks = intermediate_tasks.filter(
 				(x) => !completed_tasks.includes(x)
 			);
@@ -228,8 +229,7 @@ function main() {
 		result1 = verifyPath(path1);
 		result2 = verifyPath(path2);
 		var tasks = readTasks(path1);
-		var completed_tasks = readTasks(path2);
-		reportTask(result1, result2, tasks, completed_tasks);
+		reportTask(result1, result2, tasks,path2);
 	} 
 	else if (argument === "del") {
 		if (argLength == 3) {
