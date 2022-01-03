@@ -120,16 +120,17 @@ const completedTask = (result, done_tasks) => {
 
 const lsTask = (result, all_task) => {
 	var all_task_list = new Array();
+	var integer_array = new Array();
 	if (result == true) {
 		all_task.sort();
 		for (var i = 0; i < all_task.length; ++i) {
 			var all_task_without_index = all_task[i].slice(2);
+			var integer_part  = all_task[i].slice(0,1);
+			integer_array.push(integer_part)
 			all_task_list.push(all_task_without_index);
 		}
-		var iterator = 1;
-		for (i in all_task_list) {
-			console.log(`${iterator}. ` + all_task_list[i] + ` [${iterator}]`);
-			iterator += 1;
+		for (var i = 0; i < all_task_list.length; i++) {
+			console.log(`${i+1}. ` + all_task_list[i] + ` [${integer_array[i]}]`);
 		}
 	}
 	if (result != true) {
@@ -139,10 +140,13 @@ const lsTask = (result, all_task) => {
 
 const reportTask = (result1, result2, tasks, path2, property) => {
 	var intermediate_tasks = new Array();
+	var integer_array = new Array();
 	if (result1 == true) {
 		for (var i = 0; i < tasks.length; ++i) {
 			var all_task_without_index = tasks[i].slice(2);
 			intermediate_tasks.push(all_task_without_index);
+			var integer_part  = tasks[i].slice(0,1);
+			integer_array.push(integer_part)
 		}
 		if (result2 == true) {
 			var completed_tasks = readTasks(path2, property);
@@ -151,7 +155,7 @@ const reportTask = (result1, result2, tasks, path2, property) => {
 			);
 			console.log("Pending :", incomplete_tasks.length);
 			for (var i = 0; i < incomplete_tasks.length; ++i) {
-				console.log(`${i + 1}. ` + incomplete_tasks[i] + ` [${i + 1}]`);
+				console.log(`${i + 1}. ` + incomplete_tasks[i] + ` [${integer_array[i]}]`);
 			}
 			console.log("\nCompleted :", completed_tasks.length);
 			for (var i = 0; i < completed_tasks.length; ++i) {
@@ -161,7 +165,7 @@ const reportTask = (result1, result2, tasks, path2, property) => {
 		if (result2 != true || completed_tasks[0]=="") {
 			console.log("Pending :", intermediate_tasks.length);
 			for (var i = 0; i < intermediate_tasks.length; ++i) {
-				console.log(`${i + 1}. ` + intermediate_tasks[i] + ` [${i + 1}]`);
+				console.log(`${i + 1}. ` + intermediate_tasks[i] + ` [${integer_array[i]}]`);
 			}
 			console.log("\nCompleted : 0");
 		}
