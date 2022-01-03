@@ -35,12 +35,25 @@ const verifyPath = (path) => {
 	return result;
 };
 
-const readTasks = (path) => {
+const readTasks = (path,property) => {
 	try {
 		all_task_list = fs.readFileSync(path).toString().split("\n");
 		return all_task_list;
 	} catch (err) {
-		console.error("First add some task to list them, Report can't be generated...");
+		switch(property){
+			case "done":
+				console.error("First add some task to mark them as done!")
+				break;
+			case "ls":
+				console.error("First add some task to list them...")
+				break;
+			case "del":
+				console.error("First add some task to delete them!")
+				break;
+			case "report":
+				console.error("First add some task to list them, Report can't be generated...")
+				break;
+		}
 	}
 };
 
@@ -100,9 +113,7 @@ const completedTask = (result, done_tasks) => {
 			}
 		}
 		if (done_task_index != done_tasks.length &&done_task_index > done_tasks.length) {
-			console.log(
-				`Error: no incomplete item with index #${done_task_index} exists.`
-			);
+			console.log(`Error: no incomplete item with index #${done_task_index} exists.`);
 		}
 	}
 };
@@ -126,7 +137,7 @@ const lsTask = (result, all_task) => {
 	}
 };
 
-const reportTask = (result1, result2, tasks,path2) => {
+const reportTask = (result1, result2, tasks, path2, property) => {
 	var intermediate_tasks = new Array();
 	if (result1 == true) {
 		for (var i = 0; i < tasks.length; ++i) {
@@ -134,7 +145,7 @@ const reportTask = (result1, result2, tasks,path2) => {
 			intermediate_tasks.push(all_task_without_index);
 		}
 		if (result2 == true) {
-			var completed_tasks = readTasks(path2);
+			var completed_tasks = readTasks(path2, property);
 			var incomplete_tasks = intermediate_tasks.filter(
 				(x) => !completed_tasks.includes(x)
 			);
@@ -150,9 +161,7 @@ const reportTask = (result1, result2, tasks,path2) => {
 		if (result2 != true || completed_tasks[0]=="") {
 			console.log("Pending :", intermediate_tasks.length);
 			for (var i = 0; i < intermediate_tasks.length; ++i) {
-				console.log(
-					`${i + 1}. ` + intermediate_tasks[i] + ` [${i + 1}]`
-				);
+				console.log(`${i + 1}. ` + intermediate_tasks[i] + ` [${i + 1}]`);
 			}
 			console.log("\nCompleted : 0");
 		}
@@ -202,24 +211,27 @@ function main() {
 		}
 		if (argLength > 3) {
 			const path = "task.txt";
+			property = "done";
 			var result = verifyPath(path);
-			var done_tasks = readTasks(path);
+			var done_tasks = readTasks(path, property);
 			completedTask(result, done_tasks);
 		}
 	} 
 	else if (argument === "ls") {
 		const path = "task.txt";
 		const result = verifyPath(path);
-		var all_tasks = readTasks(path);
+		property = "ls";
+		var all_tasks = readTasks(path, property);
 		lsTask(result, all_tasks);
 	} 
 	else if (argument === "report") {
 		path1 = "task.txt";
 		path2 = "completed.txt";
+		property = "report";
 		result1 = verifyPath(path1);
 		result2 = verifyPath(path2);
-		var tasks = readTasks(path1);
-		reportTask(result1, result2, tasks,path2);
+		var tasks = readTasks(path1, property);
+		reportTask(result1, result2, tasks, path2, property);
 	} 
 	else if (argument === "del") {
 		if (argLength == 3) {
@@ -228,7 +240,8 @@ function main() {
 		if (argLength == 4) {
 			const path = "task.txt";
 			const result = verifyPath(path);
-			var all_task_list = readTasks(path);
+			property = "del"
+			var all_task_list = readTasks(path, property);
 			delTask(result, all_task_list);
 		}
 	}
