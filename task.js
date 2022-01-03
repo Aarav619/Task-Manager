@@ -85,13 +85,13 @@ const addTask = (result) => {
 	}
 };
 
-const completedTask = (result, done_tasks) => {
+const completedTask = (result1, result2, done_tasks) => {
 	var done_task_index = process.argv[3];
-	if (result == true) {
+	if (result1 == true) {
 		done_tasks.sort();
 		for (var i = 1; i < done_tasks.length + 1; ++i) {
 			if (done_task_index == i) {
-				if (result != true) {
+				if (result2 != true) {
 					var to_add_task = done_tasks[i - 1].slice(2);
 					fs.writeFile("completed.txt", to_add_task, function (err) {
 						if (err) {
@@ -100,7 +100,7 @@ const completedTask = (result, done_tasks) => {
 						console.log("Marked item as done.");
 					});
 				}
-				if (result == true) {
+				if (result2 == true) {
 					var to_add_task = done_tasks[i - 1].slice(2);
 					fs.appendFile("completed.txt","\n" + to_add_task, function (err) {
 							if (err) {
@@ -214,11 +214,13 @@ function main() {
 			console.log("Error: Missing NUMBER for marking tasks as done.");
 		}
 		if (argLength > 3) {
-			const path = "task.txt";
+			const path1 = "task.txt";
+			const path2 = "completed.txt"
 			property = "done";
-			var result = verifyPath(path);
-			var done_tasks = readTasks(path, property);
-			completedTask(result, done_tasks);
+			var result1 = verifyPath(path1);
+			var result2 = verifyPath(path2)
+			var done_tasks = readTasks(path1, property);
+			completedTask(result1, result2, done_tasks);
 		}
 	} 
 	else if (argument === "ls") {
