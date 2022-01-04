@@ -7,19 +7,7 @@ const completed = require("./lib/completedTask");
 const ls = require("./lib/lsTask");
 const report = require("./lib/reportTask");
 const del = require("./lib/delTask")
-
-const verifyPath = (path) => {
-	var result = false;
-
-	try {
-		if (fs.existsSync(path)) {
-			result = true;
-		}
-	} catch (err) {
-		console.error(err);
-	}
-	return result;
-};
+const verify = require("./lib/verifyPath")
 
 function main() {
 	var argLength = process.argv.length;
@@ -34,7 +22,7 @@ function main() {
 		}
 		if (argLength > 3) {
 			const path = "task.txt";
-			var result = verifyPath(path);
+			var result = verify.verifyPath(path);
 			add.addTask(result);
 		}
 	} 
@@ -46,15 +34,15 @@ function main() {
 			const path1 = "task.txt";
 			const path2 = "completed.txt"
 			property = "done";
-			var result1 = verifyPath(path1);
-			var result2 = verifyPath(path2)
+			var result1 = verify.verifyPath(path1);
+			var result2 = verify.verifyPath(path2)
 			var done_tasks = read.readTasks(path1, property);
 			completed.completedTask(result1, result2, done_tasks);
 		}
 	} 
 	else if (argument === "ls") {
 		const path = "task.txt";
-		const result = verifyPath(path);
+		const result = verify.verifyPath(path);
 		property = "ls";
 		var all_tasks = read.readTasks(path, property);
 		ls.lsTask(result, all_tasks);
@@ -63,8 +51,8 @@ function main() {
 		path1 = "task.txt";
 		path2 = "completed.txt";
 		property = "report";
-		result1 = verifyPath(path1);
-		result2 = verifyPath(path2);
+		result1 = verify.verifyPath(path1);
+		result2 = verify.verifyPath(path2);
 		var tasks = read.readTasks(path1, property);
 		report.reportTask(result1, result2, tasks, path2, property);
 	} 
@@ -74,7 +62,7 @@ function main() {
 		}
 		if (argLength == 4) {
 			const path = "task.txt";
-			const result = verifyPath(path);
+			const result = verify.verifyPath(path);
 			property = "del"
 			var all_task_list = read.readTasks(path, property);
 			del.delTask(result, all_task_list);
