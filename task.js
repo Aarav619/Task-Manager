@@ -1,26 +1,6 @@
 const fs = require("fs");
 const process = require("process");
-
-const usage_help = () => {
-	let usage = `
-	---------------------------------------------------     WELCOME TO     ------------------------------------------------- 
-	                                                     CLI TASK MANAGER 
-	
-	Usage :-
-	
-	=========================================================================================================================
-	|                                                                                                                       |
-	|	$ ./task help                 # Show usage                                                                      |
-	|	$ ./task add 2 hello world    # Add a new item with priority 2 and text "hello world" to the list               |
-	|	$ ./task ls                   # Show incomplete priority list items sorted by priority in ascending order       |
-	|	$ ./task del INDEX            # Delete the incomplete item with the given index                                 | 
-	|	$ ./task done INDEX           # Mark the incomplete item with the given index as complete                       |
-	|	$ ./task report               # Statistics                                                                      |
-	|                                                                                                                       |
-	=========================================================================================================================`;
-
-	console.log(usage);
-};
+const usage_help = require("./lib/help");
 
 const verifyPath = (path) => {
 	var result = false;
@@ -197,7 +177,7 @@ function main() {
 	const argument = process.argv[2];
 
 	if (argument === "help") {
-		usage_help();
+		usage_help
 	} 
 	else if (argument === "add") {
 		if (argLength == 3) {
@@ -252,11 +232,11 @@ function main() {
 		}
 	}
 	 else if (argLength < 3) {
-		usage_help();
+		usage_help;
 	}
 	 else {
 		console.log(`Invalid command ${argument}, Select the appropriate command from menu below: \n`);
-		usage_help();
+		usage_help;
 	}
 }
 
