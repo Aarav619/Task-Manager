@@ -6,6 +6,7 @@ const add = require("./lib/addTask");
 const completed = require("./lib/completedTask");
 const ls = require("./lib/lsTask");
 const report = require("./lib/reportTask");
+const del = require("./lib/delTask")
 
 const verifyPath = (path) => {
 	var result = false;
@@ -18,26 +19,6 @@ const verifyPath = (path) => {
 		console.error(err);
 	}
 	return result;
-};
-
-const delTask = (result, all_task_list) => {
-	var del_index = process.argv[3];
-	if (result == true) {
-		if (del_index > all_task_list.length || all_task_list[0] == "") {
-			return console.log(`Error: task with index #${del_index} does not exist. Nothing deleted.`);
-		}
-		for (var i = 0; i < all_task_list.length; i++) {
-			if (i + 1 == del_index) {
-				all_task_list.splice(i,1);
-				console.log(`Deleted task #${del_index}`);
-			}
-		}
-		fs.writeFile("task.txt", all_task_list.join("\n"), function (err) {
-			if (err) {
-				return console.error("error");
-			}
-		});
-	}
 };
 
 function main() {
@@ -96,7 +77,7 @@ function main() {
 			const result = verifyPath(path);
 			property = "del"
 			var all_task_list = read.readTasks(path, property);
-			delTask(result, all_task_list);
+			del.delTask(result, all_task_list);
 		}
 	}
 	 else if (argLength < 3) {
