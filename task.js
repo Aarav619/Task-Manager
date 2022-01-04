@@ -1,6 +1,8 @@
 const fs = require("fs");
 const process = require("process");
-const usage_help = require("./lib/help");
+const help = require("./lib/help");
+const read = require("./lib/readTasks");
+
 
 const verifyPath = (path) => {
 	var result = false;
@@ -13,28 +15,6 @@ const verifyPath = (path) => {
 		console.error(err);
 	}
 	return result;
-};
-
-const readTasks = (path,property) => {
-	try {
-		all_task_list = fs.readFileSync(path).toString().split("\n");
-		return all_task_list;
-	} catch (err) {
-		switch(property){
-			case "done":
-				console.error("First add some task to mark them as done!")
-				break;
-			case "ls":
-				console.error("First add some task to list them...")
-				break;
-			case "del":
-				console.error("First add some task to delete them!")
-				break;
-			case "report":
-				console.error("First add some task to list them, Report can't be generated...")
-				break;
-		}
-	}
 };
 
 const addTask = (result) => {
@@ -129,7 +109,7 @@ const reportTask = (result1, result2, tasks, path2, property) => {
 			integer_array.push(integer_part)
 		}
 		if (result2 == true) {
-			var completed_tasks = readTasks(path2, property);
+			var completed_tasks = read.readTasks(path2, property);
 			var incomplete_tasks = intermediate_tasks.filter(
 				(x) => !completed_tasks.includes(x)
 			);
@@ -177,7 +157,7 @@ function main() {
 	const argument = process.argv[2];
 
 	if (argument === "help") {
-		usage_help
+		help.usage_help()
 	} 
 	else if (argument === "add") {
 		if (argLength == 3) {
@@ -199,7 +179,7 @@ function main() {
 			property = "done";
 			var result1 = verifyPath(path1);
 			var result2 = verifyPath(path2)
-			var done_tasks = readTasks(path1, property);
+			var done_tasks = read.readTasks(path1, property);
 			completedTask(result1, result2, done_tasks);
 		}
 	} 
@@ -207,7 +187,7 @@ function main() {
 		const path = "task.txt";
 		const result = verifyPath(path);
 		property = "ls";
-		var all_tasks = readTasks(path, property);
+		var all_tasks = read.readTasks(path, property);
 		lsTask(result, all_tasks);
 	} 
 	else if (argument === "report") {
@@ -216,7 +196,7 @@ function main() {
 		property = "report";
 		result1 = verifyPath(path1);
 		result2 = verifyPath(path2);
-		var tasks = readTasks(path1, property);
+		var tasks = read.readTasks(path1, property);
 		reportTask(result1, result2, tasks, path2, property);
 	} 
 	else if (argument === "del") {
@@ -227,16 +207,16 @@ function main() {
 			const path = "task.txt";
 			const result = verifyPath(path);
 			property = "del"
-			var all_task_list = readTasks(path, property);
+			var all_task_list = read.readTasks(path, property);
 			delTask(result, all_task_list);
 		}
 	}
 	 else if (argLength < 3) {
-		usage_help;
+		help.usage_help();
 	}
 	 else {
 		console.log(`Invalid command ${argument}, Select the appropriate command from menu below: \n`);
-		usage_help;
+		help.usage_help();
 	}
 }
 
