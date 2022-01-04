@@ -2,7 +2,7 @@ const fs = require("fs");
 const process = require("process");
 const help = require("./lib/help");
 const read = require("./lib/readTasks");
-
+const add = require("./lib/addTask")
 
 const verifyPath = (path) => {
 	var result = false;
@@ -15,34 +15,6 @@ const verifyPath = (path) => {
 		console.error(err);
 	}
 	return result;
-};
-
-const addTask = (result) => {
-	let task = "";
-	for (var i = 3; i < process.argv.length; ++i) {
-		task += process.argv[i] + " ";
-	}
-	task = task.trim();
-	var task_length = task.length;
-	var priority = process.argv[3];
-	var task_without_priority = task.slice(2, task_length);
-	var task_to_add = task;
-	if (result == true) {
-		fs.appendFile("task.txt", "\n" + task_to_add, function (err) {
-			if (err) {
-				return console.error("error");
-			}
-			console.log(`Added task: "${task_without_priority}" with priority ${priority}`);
-		});
-	}
-	if (result != true) {
-		fs.writeFile("task.txt", task_to_add, function (err) {
-			if (err) {
-				return console.error("error");
-			}
-			console.log(`Added task: "${task_without_priority}" with priority ${priority}`);
-		});
-	}
 };
 
 const completedTask = (result1, result2, done_tasks) => {
@@ -166,7 +138,7 @@ function main() {
 		if (argLength > 3) {
 			const path = "task.txt";
 			var result = verifyPath(path);
-			addTask(result);
+			add.addTask(result);
 		}
 	} 
 	else if (argument === "done") {
