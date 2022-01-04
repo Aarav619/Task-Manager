@@ -1,4 +1,3 @@
-const fs = require("fs");
 const process = require("process");
 const help = require("./lib/help");
 const read = require("./lib/readTasks");
